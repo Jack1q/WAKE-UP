@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 import time
 import datetime
 from lcd_display import lcd
-import threading
+import multiprocessing
 
 # Day Constants #
 MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY = range(7) # Do not edit
@@ -25,7 +25,7 @@ GPIO.setup(BUZZER_PIN, GPIO.OUT)
 ################################
 my_lcd = lcd()
 
-# Thread function for continuously updating the LCD clock display while still checking to buzz
+# Process function for continuously updating the LCD clock display while still checking to buzz
 # This also allows the clock to keep ticking while the buzzer is going off
 # I will also add something to allow users occasionally display different LCD messages
 def update_lcd():
@@ -34,8 +34,9 @@ def update_lcd():
         my_lcd.lcd_display_string(time.strftime('%a %b %d, 20%y'), 2)
 
 if __name__ == '__main__':
-    # Create LCD Thread
-    lcd_thread = threading.Thread(target=update_lcd,args=(),daemon=True).start()        
+    # Create LCD Process
+    lcd_process = multiprocessing.Process(target=update_lcd,args=()).start()
+    #lcd_thread = threading.Thread(target=update_lcd,args=(),daemon=True).start()        
     # Execution loop
     while True:
         # Check if it's time to beep alarm.
