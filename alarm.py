@@ -33,18 +33,18 @@ def update_lcd():
         # my_lcd.lcd_display_string(get_unread(EMAIL_ADDRESS, EMAIL_PASSWORD), 2)
         # my_lcd.lcd_display_string(CUSTOM_MESSAGE, 2)
         
-        
+def beep():
+    """ Plays piezoelectric buzzer to wake me up """
+    for x in range(30):
+        GPIO.output(BUZZER_PIN, GPIO.HIGH)  
+        time.sleep(1)
+        GPIO.output(BUZZER_PIN, GPIO.LOW)
+        time.sleep(1)
+
 if __name__ == '__main__':
     lcd_process = multiprocessing.Process(target=update_lcd, args=(),daemon=True).start()
     while True:
         current_time_object = datetime.datetime.now()
         current_day, current_hour, current_minutes = current_time_object.weekday(), current_time_object.hour, current_time_object.minute
-        
         if current_hour == HOUR and current_minutes == MINUTES and current_day not in SLEEP_IN_DAYS:
-            for x in range(30):
-                print('Wake up. NOW!')
-                GPIO.output(BUZZER_PIN, GPIO.HIGH) # Beeeep 
-                time.sleep(1)
-                GPIO.output(BUZZER_PIN, GPIO.LOW)
-                time.sleep(1)
-            
+           beep()
