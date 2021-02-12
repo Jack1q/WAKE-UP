@@ -35,3 +35,6 @@ class Weather:
         # store forecast + time in sqlite.
         # if time > 3 hours ago, get new forecast and store it
         # else, get stored forecast.
+
+if __name__ == '__main__':
+    print(Weather.get_latest_forecast())
