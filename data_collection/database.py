@@ -14,7 +14,7 @@ class Database:
         self.cursor = self.connection.cursor()
     
     def create_new_table(self, table_name, columns):
-        command = f"CREATE TABLE {table_name} ("
+        command = f"CREATE TABLE IF NOT EXISTS {table_name} ("
         command += ', '.join([f'{column.name} {column.type}' for column in columns]) + ')'
         self.cursor.execute(command)
         self.connection.commit()
@@ -23,7 +23,6 @@ class Database:
         command = f'INSERT INTO {table_name} ('
         command += ', '.join([f'{column.name}' for column in columns]) + ') VALUES ('
         command += ', '.join([f'{column.value}' for column in columns]) + ')'
-        print(command)
         self.cursor.execute(command)
         self.connection.commit()
 
@@ -41,17 +40,22 @@ class Database:
             command += "WHERE {column_name} = {expected_value}"
         return self.cursor.execute(command).fetchall()
 
+    def get_table_size(self, table_name):
+        command = f"SELECT * FROM {table_name}"
+        return len(self.cursor.execute(command).fetchall())
+
     def close_connection(self):
         self.connection.close()
 
 
 # Test - the code below currently works
-db = Database()
-db.create_new_table('Forecasts', [Column('Description','TEXT')])
-db.add_to_table('Forecasts', [Column('Description','TEXT','72F Sunny')])
-val = db.get_value_from_table('Forecasts', 'Description')[0][0]
-print(val)
-db.update_value('Forecasts',Column('Description','TEXT',val),'70F Cloudy')
-new_val = db.get_value_from_table('Forecasts', 'Description')[0][0]
-print(new_val)
-db.close_connection()
+# db = Database()
+# db.create_new_table('Forecasts', [Column('Description','TEXT')])
+# # db.add_to_table('Forecasts', [Column('Description','TEXT','72F Sunny')])
+# val = db.get_value_from_table('Forecasts', 'Description')[-1][0]
+# print(val)
+# db.update_value('Forecasts',Column('Description','TEXT',val),'70F Cloudy')
+# new_val = db.get_value_from_table('Forecasts', 'Description')[0][0]
+# print(new_val)
+# print(db.get_table_size('Forecasts'))
+# db.close_connection()
