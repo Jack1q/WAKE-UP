@@ -1,3 +1,10 @@
+""" 
+MyPiClock v0.4
+Smart LCD Alarm Clock with wake-up piezo buzzer.
+Contributor List: Jack Donofrio
+Last updated on February 12, 2021 at 10:31 AM.
+"""
+
 # MyPiClock v0.4
 # Smart LCD Alarm Clock with wake-up buzzer
 # Originally written on March 19, 2020

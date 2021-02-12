@@ -27,6 +27,7 @@ class Weather:
         return temperature + ' ' + forecast_description
 
     def create_weather_db():
+        """ Creates new Database for storing Forecast data """
         db = Database()
         db.create_new_table(table_name = 'Forecasts',
             columns = [
@@ -34,10 +35,20 @@ class Weather:
             ])
 
     def get_db_forecast_value():
+        """ 
+        Retrieves most recently stored forecast value.
+        With how data is stored into the Forecasts table in store_forecast_in_db()
+        func (adds new row if none exists, otherwise updates row), there should only 
+        ever really be one row and thus one value.
+        """
         db = Database()
         return db.get_value_from_table('Forecasts', 'Description')[-1][0]
     
     def store_forecast_in_db(new_forecast, is_first_value):
+        """ 
+        Stores forecast data into database. Adds a new row if none exists, otherwise update
+        the single row for holding forecast Description data. 
+        """
         db = Database()
         if is_first_value:
             db.add_to_table('Forecasts', [Column('Description','TEXT',new_forecast)])
@@ -45,7 +56,7 @@ class Weather:
             db.update_value('Forecasts', Column('Description','TEXT',Weather.get_db_forecast_value()), new_forecast)
 
     def get_latest_forecast():
-        """ Accesses latest local forecast data. Database is used if data is still fresh """
+        """ Accesses latest local forecast data. Updates forecast every 10 minutes."""
         Weather.create_weather_db()
         database_is_empty = bool(Database().get_table_size('Forecasts') == 0)
         if datetime.now().minute % 10 == 0 or database_is_empty: # updates every 10 minutes
