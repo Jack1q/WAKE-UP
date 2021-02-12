@@ -18,3 +18,6 @@ This repository contains the code for operating my Raspberry Pi alarm clock.
 ### Bugs to fix / other tasks
 - Parsing one-word forecast from National Weather API's shortForecast description
   - Right now, it just displays he shortForecast. Instead of 'Mostly Clear then Light Clouds' it should be 'Clear' because the LCD can only fit 16 chars on a line
+
+#### Note for development
+- Keep all changes on separate branches until they have been hardware tested.
