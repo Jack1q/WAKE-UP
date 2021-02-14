@@ -1,5 +1,5 @@
 import requests
-from database import Database, Column
+from data_collection.database import Database, Column
 from datetime import datetime
 
 class Weather:
@@ -69,5 +69,3 @@ class Weather:
         else:
             return Weather.get_db_forecast_value()
 
-if __name__ == '__main__':
-    print(Weather.get_latest_forecast())
