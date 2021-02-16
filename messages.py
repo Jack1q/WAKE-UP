@@ -3,6 +3,7 @@ import time
 from data_collection.weather import Weather
 from data_collection.stocks import Stock
 from data_collection.mail import Mail
+from data_collection.instagram import Instagram
 
 def get_current_date():
     try:
@@ -25,5 +26,11 @@ def get_stock(ticker):
 def get_unread(address, password):
     try:
         return Mail(address, password).get_unread_mail_count()
+    except:
+        return "Error"
+
+def get_instagram_followers(username):
+    try:
+        return Instagram(username).get_follower_count()
     except:
         return "Error"

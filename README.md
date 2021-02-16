@@ -7,6 +7,7 @@ This repository contains the code for operating my Raspberry Pi alarm clock.
 - Display live stock prices from Yahoo Finance
 - Display the local temperature and weather forecast 
 - Tell you how many unread emails you have in your Gmail inbox
+- Tell you your live Instagram follower count
 
 ### What I'm planning to add
 - Displaying start/end times for online classes as they happen
