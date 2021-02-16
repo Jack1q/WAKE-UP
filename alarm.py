@@ -30,14 +30,17 @@ def update_lcd():
     """ 
     Constantly updates LCD screen with time and user's selected data 
     I am currently developing ways for the user to scroll through different
-    datapoints rather than selecting a single one to use.
+    datapoints rather than un-commenting to select a single one to use.
     """
     while True:
+        # Top LCD row:
         my_lcd.lcd_display_string(time.strftime('%I:%M %p %m/%d'), 1)
+        # Bottom LCD row:
         # my_lcd.lcd_display_string(get_current_date(), 2)
         # my_lcd.lcd_display_string(get_forecast(), 2)
         my_lcd.lcd_display_string(get_stock(STOCK_TICKER), 2)
         # my_lcd.lcd_display_string(get_unread(EMAIL_ADDRESS, EMAIL_PASSWORD), 2)
+        # my_lcd.lcd_display_string(get_instagram_followers(INSTAGRAM_USERNAME))
         # my_lcd.lcd_display_string(CUSTOM_MESSAGE, 2)
         
 def beep():
