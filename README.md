@@ -1,6 +1,8 @@
 # MyPiClock v0.4
 This repository contains the code for operating my Raspberry Pi alarm clock.
 
+Feel free to clone this code for your own use, or fork this repository and make a pull request if there's anything you'd like to see added.
+
 ### Right now, this clock can:
 - Tell the time
 - Beep at a scheduled time on selected days of the week
