@@ -1,6 +1,8 @@
 # MyPiClock v0.4
 This repository contains the code for operating my Raspberry Pi alarm clock.
 
+Feel free to clone this code for your own use, or fork this repository and make a pull request if there's anything you'd like to see added.
+
 ### Right now, this clock can:
 - Tell the time
 - Beep at a scheduled time on selected days of the week
@@ -16,9 +18,9 @@ This repository contains the code for operating my Raspberry Pi alarm clock.
 - Beeping on specific calendar dates
 
 
-### Bugs to fix / other tasks
+### Bugs to fix / To-do list
 - Parsing one-word forecast from National Weather API's shortForecast description
   - Right now, it just displays he shortForecast. Instead of 'Mostly Clear then Light Clouds' it should be 'Clear' because the LCD can only fit 16 chars on a line
 
-#### Note for development
-- Keep all changes on separate branches until they have been hardware tested.
+### Contributing
+Want to add a feature? Create a pull request!
