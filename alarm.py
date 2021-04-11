@@ -2,20 +2,15 @@
 MyPiClock v0.4
 Smart LCD Alarm Clock with wake-up piezo buzzer.
 Contributor List: Jack Donofrio
-Last updated on February 12, 2021 at 10:31 AM.
+Last updated on April 11, 2021 at 2:52 PM.
 """
-
-# MyPiClock v0.4
-# Smart LCD Alarm Clock with wake-up buzzer
-# Originally written on March 19, 2020
-# Updated last on February 9, 2021 at 4:37 PM
 
 import RPi.GPIO as GPIO
 import time
 import datetime
-from lcd_display import lcd
-from config import *
-from messages import *
+from display.lcd_display import LCD
+from config import Day, Settings
+from messages import Messages
 import multiprocessing
 
 GPIO.setwarnings(False)
@@ -23,25 +18,25 @@ GPIO.setmode(GPIO.BOARD)
 BUZZER_PIN = 23
 GPIO.setup(BUZZER_PIN, GPIO.OUT)
 
-my_lcd = lcd()
-my_lcd.backlight(0)
+lcd = LCD()
+lcd.backlight(0)
 
 def update_lcd():
     """ 
     Constantly updates LCD screen with time and user's selected data 
-    I am currently developing ways for the user to scroll through different
+    I am currently developing a way for the user to scroll through different
     datapoints rather than un-commenting to select a single one to use.
     """
     while True:
         # Top LCD row:
-        my_lcd.lcd_display_string(time.strftime('%I:%M %p %m/%d'), 1)
+        lcd.lcd_display_string(Messages.get_current_time(), 1)
         # Bottom LCD row:
-        # my_lcd.lcd_display_string(get_current_date(), 2)
-        # my_lcd.lcd_display_string(get_forecast(), 2)
-        my_lcd.lcd_display_string(get_stock(STOCK_TICKER), 2)
-        # my_lcd.lcd_display_string(get_unread(EMAIL_ADDRESS, EMAIL_PASSWORD), 2)
-        # my_lcd.lcd_display_string(get_instagram_followers(INSTAGRAM_USERNAME))
-        # my_lcd.lcd_display_string(CUSTOM_MESSAGE, 2)
+        # lcd.lcd_display_string(Messages.get_current_date(), 2)
+        # lcd.lcd_display_string(Messages.get_forecast(), 2)
+        lcd.lcd_display_string(Messages.get_stock(), 2)
+        # lcd.lcd_display_string(Messages.get_unread(), 2)
+        # lcd.lcd_display_string(Messages.get_instagram_followers())
+        # lcd.lcd_display_string(Messages.get_custom_message(), 2)
         
 def beep():
     """ Plays piezoelectric buzzer to wake me up """
@@ -51,10 +46,13 @@ def beep():
         GPIO.output(BUZZER_PIN, GPIO.LOW)
         time.sleep(1)
 
+def is_time_to_beep():
+    current_time_object = datetime.datetime.now()
+    current_day, current_hour, current_minutes = current_time_object.weekday(), current_time_object.hour, current_time_object.minute
+    return current_hour == Settings.HOUR and current_minutes == Settings.MINUTES and current_day not in Settings.SLEEP_IN_DAYS
+
 if __name__ == '__main__':
     lcd_process = multiprocessing.Process(target=update_lcd, args=(),daemon=True).start()
     while True:
-        current_time_object = datetime.datetime.now()
-        current_day, current_hour, current_minutes = current_time_object.weekday(), current_time_object.hour, current_time_object.minute
-        if current_hour == HOUR and current_minutes == MINUTES and current_day not in SLEEP_IN_DAYS:
+        if is_time_to_beep():
            beep()
