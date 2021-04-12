@@ -35,8 +35,9 @@ def update_lcd():
         # lcd.lcd_display_string(Messages.get_forecast(), 2)
         lcd.lcd_display_string(Messages.get_stock(), 2)
         # lcd.lcd_display_string(Messages.get_unread(), 2)
-        # lcd.lcd_display_string(Messages.get_instagram_followers())
+        # lcd.lcd_display_string(Messages.get_instagram_followers(), 2)
         # lcd.lcd_display_string(Messages.get_custom_message(), 2)
+        # lcd.lcd_display_string(Messages.get_countdown(), 2)
         
 def beep():
     """ Plays piezoelectric buzzer to wake me up """

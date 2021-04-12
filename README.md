@@ -10,6 +10,8 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Display the local temperature and weather forecast 
 - Tell you how many unread emails you have in your Gmail inbox
 - Tell you your live Instagram follower count
+- Display a custom message.
+- Count down until a certain day / time.
 
 ### What I'm planning to add
 - Displaying start/end times for online classes as they happen
