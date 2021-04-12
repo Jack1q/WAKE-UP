@@ -4,6 +4,7 @@ from data_collection.weather import Weather
 from data_collection.stocks import Stock
 from data_collection.mail import Mail
 from data_collection.instagram import Instagram
+from data_collection.countdown import Countdown
 from config import Settings
 
 class Messages:
@@ -46,3 +47,6 @@ class Messages:
     @staticmethod
     def get_custom_message():
         return Settings.CUSTOM_MESSAGE[:16]
+    @staticmethod
+    def get_countdown():
+        return Countdown(Settings.COUNTDOWN_DATETIME).get_formatted_countdown_message()

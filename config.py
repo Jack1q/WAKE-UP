@@ -14,3 +14,10 @@ class Settings:
     STOCK_TICKER = "GME"
     CUSTOM_MESSAGE = "Hello world!"
     INSTAGRAM_USERNAME = "instagram"
+    COUNTDOWN_DATETIME = {
+        "year" : 2022,
+        "month" : 1,
+        "day" : 1,
+        "hour" : 0,
+        "minute" : 0
+    }
