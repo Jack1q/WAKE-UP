@@ -22,15 +22,19 @@ class Countdown:
         """ Calculates time from now until set countdown time """
         return self.countdown_time - datetime.now()
     
+    @staticmethod
+    def format_time(time_unit):
+        """ Adds leading zeroes to time units """
+        if time_unit < 10:
+            return "0" + str(time_unit)
+        return time_unit
+    
     def get_formatted_countdown_message(self):
+        """ Formats countdown message for clock display """
         delta = self.get_time_delta()
         if delta.total_seconds() < 0:
             return "Countdown over."
         hours = delta.seconds // 3600
-        minutes = (delta.seconds % 3600) // 60
-        if minutes < 10:
-            minutes = "0" + str(minutes)
-        seconds = (delta.seconds % 3600) % 60
-        if seconds < 10:
-            seconds = "0" + str(seconds)
+        minutes = format_time((delta.seconds % 3600) // 60)
+        seconds = format_time((delta.seconds % 3600) % 60)
         return f"{delta.days}d {hours}:{minutes}:{seconds}"
