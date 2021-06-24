@@ -10,7 +10,7 @@ import time
 import datetime
 from display.lcd_display import LCD
 from config import Day, Settings
-from messages import Messages
+import messages
 import multiprocessing
 
 GPIO.setwarnings(False)
@@ -29,15 +29,15 @@ def update_lcd():
     """
     while True:
         # Top LCD row:
-        lcd.lcd_display_string(Messages.get_current_time(), 1)
+        lcd.lcd_display_string(messages.get_current_time(), 1)
         # Bottom LCD row:
-        # lcd.lcd_display_string(Messages.get_current_date(), 2)
-        # lcd.lcd_display_string(Messages.get_forecast(), 2)
-        lcd.lcd_display_string(Messages.get_stock(), 2)
-        # lcd.lcd_display_string(Messages.get_unread(), 2)
-        # lcd.lcd_display_string(Messages.get_instagram_followers(), 2)
-        # lcd.lcd_display_string(Messages.get_custom_message(), 2)
-        # lcd.lcd_display_string(Messages.get_countdown(), 2)
+        # lcd.lcd_display_string(messages.get_current_date(), 2)
+        # lcd.lcd_display_string(messages.get_forecast(), 2)
+        lcd.lcd_display_string(messages.get_stock(), 2)
+        # lcd.lcd_display_string(messages.get_unread(), 2)
+        # lcd.lcd_display_string(messages.get_instagram_followers(), 2)
+        # lcd.lcd_display_string(messages.get_custom_message(), 2)
+        # lcd.lcd_display_string(messages.get_countdown(), 2)
         
 def beep():
     """ Plays piezoelectric buzzer to wake me up """
