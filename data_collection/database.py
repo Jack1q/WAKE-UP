@@ -39,6 +39,7 @@ class Database:
         command = f"UPDATE {table_name} SET {column.name} = {self.sanitize_value(column.type, new_value)} " + \
             f"WHERE {column.name} = {column.value}"
         self.cursor.execute(command)
+        self.connection.commit()
 
     def get_value_from_table(self, table_name, column_name, expected_value=None):
         """ Retrieves value from column(s) within table row(s) """
