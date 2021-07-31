@@ -1,23 +1,20 @@
-""" Configurable constants for easy access """
+""" Module for managing configuration / settings """
 
-""" Don't change date constants """
-class Day:
-    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY = range(7) 
+import json
 
-""" Change the default values below to whatever you want """
-class Settings:
-    SLEEP_IN_DAYS = [Day.SATURDAY, Day.SUNDAY]
-    HOUR = 6
-    MINUTES = 30
-    EMAIL_ADDRESS = ""
-    EMAIL_PASSWORD = ""
-    STOCK_TICKER = "GME"
-    CUSTOM_MESSAGE = "Hello world!"
-    INSTAGRAM_USERNAME = "instagram"
-    COUNTDOWN_DATETIME = {
-        "year" : 2022,
-        "month" : 1,
-        "day" : 1,
-        "hour" : 0,
-        "minute" : 0
-    }
+
+def get_settings_dictionary():
+    """ 
+    Retrieves settings dictionary. 
+    Note: SLEEP_IN_DAYS day notation works as follows: Mon = 0, Tue = 1, ... , Sun = 6
+    """
+
+    with open('settings.json', 'r') as settings_file:
+        return json.load(settings_file)
+
+
+def update_settings_file(updated_dictionary):
+    """ Saves updated settings dict to settings.json """
+
+    with open('settings.json', 'w') as settings_file:
+        settings_file.write(json.dumps(updated_dictionary, indent=4))

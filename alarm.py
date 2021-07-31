@@ -9,8 +9,8 @@ import RPi.GPIO as GPIO
 import time
 import datetime
 from display.lcd_display import LCD
-from config import Day, Settings
-import messages
+from config import get_settings_dictionary
+from messages import get_display_options
 import multiprocessing
 
 GPIO.setwarnings(False)
@@ -22,25 +22,21 @@ lcd = LCD()
 lcd.backlight(0)
 
 def update_lcd():
-    """ 
-    Constantly updates LCD screen with time and user's selected data 
-    I am currently developing a way for the user to scroll through different
-    datapoints rather than un-commenting to select a single one to use.
-    """
+    """ Constantly updates LCD screen with time and user's chosen data to track """
+    
     while True:
+
         # Top LCD row:
         lcd.lcd_display_string(messages.get_current_time(), 1)
+
         # Bottom LCD row:
-        # lcd.lcd_display_string(messages.get_current_date(), 2)
-        # lcd.lcd_display_string(messages.get_forecast(), 2)
-        lcd.lcd_display_string(messages.get_stock(), 2)
-        # lcd.lcd_display_string(messages.get_unread(), 2)
-        # lcd.lcd_display_string(messages.get_instagram_followers(), 2)
-        # lcd.lcd_display_string(messages.get_custom_message(), 2)
-        # lcd.lcd_display_string(messages.get_countdown(), 2)
+        display_options = get_display_options()
+        selected_option = display_options[get_settings_dictionary()['DISPLAY_OPTION']]
+        lcd.lcd_display_string(selected_option(), 2)
         
 def beep():
     """ Plays piezoelectric buzzer to wake me up """
+
     for x in range(30):
         GPIO.output(BUZZER_PIN, GPIO.HIGH)  
         time.sleep(1)
@@ -50,7 +46,8 @@ def beep():
 def is_time_to_beep():
     current_time_object = datetime.datetime.now()
     current_day, current_hour, current_minutes = current_time_object.weekday(), current_time_object.hour, current_time_object.minute
-    return current_hour == Settings.HOUR and current_minutes == Settings.MINUTES and current_day not in Settings.SLEEP_IN_DAYS
+    settings = get_settings_dictionary()
+    return current_hour == settings['HOUR'] and current_minutes == settings['MINUTES'] and current_day not in settings['SLEEP_IN_DAYS']
 
 if __name__ == '__main__':
     lcd_process = multiprocessing.Process(target=update_lcd, args=(),daemon=True).start()

@@ -1,0 +1,21 @@
+{
+    "SLEEP_IN_DAYS": [
+        5,
+        6
+    ],
+    "HOUR": 6,
+    "MINUTES": 30,
+    "EMAIL_ADDRESS": "",
+    "EMAIL_PASSWORD": "",
+    "STOCK_TICKER": "",
+    "CUSTOM_MESSAGE": "Hello world!",
+    "INSTAGRAM_USERNAME": "instagram",
+    "COUNTDOWN_DATETIME": {
+        "year": 2022,
+        "month": 1,
+        "day": 1,
+        "hour": 0,
+        "minute": 0
+    },
+    "DISPLAY_OPTION" : 0
+}

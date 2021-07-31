@@ -5,47 +5,61 @@ from data_collection.stocks import Stock
 import data_collection.mail as mail
 import data_collection.instagram as instagram
 from data_collection.countdown import Countdown
-from config import Settings
+from config import get_settings_dictionary
+
+settings = get_settings_dictionary()
 
 def get_current_time():
     try:
         return time.strftime('%I:%M %p %m/%d')
     except:
-        return "Error"
+        return "Time Error"
 
 def get_current_date():
     try:
         return time.strftime('%a %b %d, 20%y')
     except:
-        return "Error"
+        return "Date Error"
     
 def get_forecast():
     try:
         return weather.get_latest_forecast()[:16]
     except:
-        return "Error"
+        return "Weather Error"
     
 def get_stock():
     try:
-        return Stock(Settings.STOCK_TICKER).get_stock_data()[:16]
+        return Stock(settings['STOCK_TICKER']).get_stock_data()[:16]
     except:
-        return "Error"
+        return "Stock Error"
 
 def get_unread():
     try:
-        return mail.get_unread_mail_count(Settings.EMAIL_ADDRESS, Settings.EMAIL_PASSWORD)
+        return mail.get_unread_mail_count(settings["EMAIL_ADDRESS"], settings["EMAIL_PASSWORD"])
     except:
-        return "Error"
+        return "Email Error"
 
 def get_instagram_followers():
     try:
-        return instagram.get_follower_count(Settings.INSTAGRAM_USERNAME)
+        return instagram.get_follower_count(settings["INSTAGRAM_USERNAME"])
     except:
-        return "Error"
+        return "IG Error"
 
 def get_custom_message():
-    return Settings.CUSTOM_MESSAGE[:16]
+    return settings["CUSTOM_MESSAGE"][:16]
 
 def get_countdown():
-    return Countdown(Settings.COUNTDOWN_DATETIME).get_formatted_countdown_message()
-    
+    return Countdown(settings["COUNTDOWN_DATETIME"]).get_formatted_countdown_message()
+
+def get_display_options():
+    """ Returns list of display options for BOTTOM ROW """
+
+    return [
+        get_current_date,
+        get_forecast,
+        get_stock,
+        get_unread,
+        get_instagram_followers,
+        get_custom_message,
+        get_countdown
+    ]
