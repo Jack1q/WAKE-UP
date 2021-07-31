@@ -35,6 +35,6 @@ class Countdown:
         if delta.total_seconds() < 0:
             return "Countdown over."
         hours = delta.seconds // 3600
-        minutes = format_time((delta.seconds % 3600) // 60)
-        seconds = format_time((delta.seconds % 3600) % 60)
+        minutes = Countdown.format_time((delta.seconds % 3600) // 60)
+        seconds = Countdown.format_time((delta.seconds % 3600) % 60)
         return f"{delta.days}d {hours}:{minutes}:{seconds}"
