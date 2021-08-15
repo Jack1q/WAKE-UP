@@ -1,4 +1,4 @@
-# MyPiClock v0.4
+# wake-me-up
 This repository contains the code for operating my Raspberry Pi alarm clock.
 
 Feel free to clone this code for your own use, or fork this repository and make a pull request if there's anything you'd like to see added.
@@ -21,6 +21,7 @@ Feel free to clone this code for your own use, or fork this repository and make 
 
 
 ### Bugs to fix / To-do list
+- finish web-app dashboard for changing clock settings from online.
 - Parsing one-word forecast from National Weather API's shortForecast description
   - Right now, it just displays he shortForecast. Instead of 'Mostly Clear then Light Clouds' it should be 'Clear' because the LCD can only fit 16 chars on a line
 
