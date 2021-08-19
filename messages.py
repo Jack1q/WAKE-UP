@@ -1,17 +1,21 @@
 """ Formatting for data collectors """
 import time
+import datetime
+
 import data_collection.weather as weather
 from data_collection.stocks import Stock
 import data_collection.mail as mail
 import data_collection.instagram as instagram
 from data_collection.countdown import Countdown
-from config import get_settings_dictionary
+import config
 
-settings = get_settings_dictionary()
+settings = config.get_settings_dictionary()
 
 def formatter(msg):
     if len(msg) < 16:
         return msg + (" " * (16 - len(msg)))
+    if len(msg) > 16:
+        return msg[:16]
     return msg
 
 def get_current_time():
@@ -28,13 +32,13 @@ def get_current_date():
     
 def get_forecast():
     try:
-        return weather.get_latest_forecast()[:16]
+        return weather.get_latest_forecast()
     except:
         return "Weather Error"
     
 def get_stock():
     try:
-        return Stock(settings['STOCK_TICKER']).get_stock_data()[:16]
+        return Stock(settings['STOCK_TICKER']).get_stock_data()
     except:
         return "Stock Error"
 
@@ -50,8 +54,20 @@ def get_instagram_followers():
     except:
         return "IG Error"
 
+def get_daily_message():
+    today = time.strftime('%m-%d')
+    daily_messages = settings['DAILY_MESSAGES']
+    if today in daily_messages:
+        return daily_messages[today]
+    hour = datetime.datetime.now().hour
+    if 0 <= hour < 12:
+        return "Good Morning"
+    elif 12 <= hour < 18:
+        return "Good Afternoon"
+    return "Good Night"    
+
 def get_custom_message():
-    return settings["CUSTOM_MESSAGE"][:16]
+    return settings["CUSTOM_MESSAGE"]
 
 def get_countdown():
     return Countdown(settings["COUNTDOWN_DATETIME"]).get_formatted_countdown_message()
@@ -65,6 +81,7 @@ def get_display_options():
         get_stock,
         get_unread,
         get_instagram_followers,
+        get_daily_message,
         get_custom_message,
         get_countdown
     ]
