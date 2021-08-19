@@ -24,5 +24,5 @@ if __name__ == '__main__':
     start_processes(process_list)
     while True:
         if input():
-            termiante_processes(process_list)
+            terminate_processes(process_list)
             break
