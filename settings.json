@@ -17,5 +17,10 @@
         "hour": 0,
         "minute": 0
     },
-    "DISPLAY_OPTION" : 0
+    "DISPLAY_OPTION" : 0,
+    "DAILY_MESSAGES" : {
+        "03-14" : "Happy Pi Day!",
+        "09-09" : "Happy Birthday!",
+        "12-25" : "Merry Christmas"
+    }
 }
