@@ -23,7 +23,8 @@ class LCDProcess(multiprocessing.Process):
     @staticmethod
     def update_lcd():
         """ Constantly updates LCD screen with time and user's chosen data to track """
-
+        
+        DEFAULT_OPTION = 0
         while True:
 
             # Top LCD row:
@@ -31,9 +32,42 @@ class LCDProcess(multiprocessing.Process):
 
             # Bottom LCD row:
             display_options = messages.get_display_options()
-            selected_option = display_options[config.get_settings_dictionary()['DISPLAY_OPTION']]
-            LCDProcess.lcd.lcd_display_string(selected_option(), 2)
+            try:
+                selected_option = display_options[config.get_settings_dictionary()['DISPLAY_OPTION']]
+            except ValueError:
+                selected_option = display_options[DEFAULT_OPTION]
+            LCDProcess.lcd.lcd_display_string(messages.formatter(selected_option()), 2)
 
+class ButtonProcess(multiprocessing.Process):
+        
+    def __init__(self, button_action, pin):
+        super().__init__(target=ButtonProcess.button_process_function, args=(button_action, pin), daemon=True)
+    
+    @staticmethod
+    def button_process_function(button_action, pin, delay=True):
+        GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        last_press_time = time.time()
+        while True:
+            if GPIO.input(pin) == GPIO.HIGH:
+                if delay and time.time() - last_press_time < 1:
+                    continue
+                last_press_time = time.time()
+                button_action()
+            
+    
+class ButtonActions:
+    
+    @staticmethod
+    def cycle_bottom_lcd():
+        settings = config.get_settings_dictionary()
+        option = settings['DISPLAY_OPTION']
+        if option >= len(messages.get_display_options()) - 1:
+            option = 0
+        else:
+            option += 1
+        settings['DISPLAY_OPTION'] = option
+        config.update_settings_file(settings)
+        
 
 class BuzzerProcess(multiprocessing.Process):
 

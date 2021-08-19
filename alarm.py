@@ -7,13 +7,22 @@ Last updated on April 11, 2021 at 2:52 PM.
 
 import processes
 
+def start_processes(process_list):
+    for process in process_list:
+        process.start()
+
+def terminate_processes(process_list):
+    for process in process_list:
+        process.terminate()
+
 if __name__ == '__main__':
-    lcd_process = processes.LCDProcess()
-    beep_process = processes.BuzzerProcess()
-    lcd_process.start()
-    beep_process.start()
+    process_list = [
+        processes.LCDProcess(),
+        processes.BuzzerProcess(),
+        processes.ButtonProcess(processes.ButtonActions.cycle_bottom_lcd, 10)    
+        ]
+    start_processes(process_list)
     while True:
         if input():
-            lcd_process.terminate()
-            beep_process.terminate()
+            termiante_processes(process_list)
             break

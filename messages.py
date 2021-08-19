@@ -9,6 +9,11 @@ from config import get_settings_dictionary
 
 settings = get_settings_dictionary()
 
+def formatter(msg):
+    if len(msg) < 16:
+        return msg + (" " * (16 - len(msg)))
+    return msg
+
 def get_current_time():
     try:
         return time.strftime('%I:%M %p %m/%d')
