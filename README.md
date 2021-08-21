@@ -3,6 +3,7 @@ This repository contains the code for operating my Raspberry Pi alarm clock.
 
 Feel free to clone this code for your own use, or fork this repository and make a pull request if there's anything you'd like to see added.
 
+
 ### Right now, this clock can:
 - Tell the time
 - Beep at a scheduled time on selected days of the week
@@ -11,21 +12,45 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Tell you how many unread emails you have in your Gmail inbox
 - Tell you your live Instagram follower count
 - Display a custom message.
-- Count down until a certain day / time.
+- Show configurable messages on certain days, such as ```Happy Birthday``` or ```Happy Pi Day!```
+- Count down until a certain date and/or time.
 
-### What I'm planning to add
-- Displaying start/end times for online classes as they happen
-- Showing pre-programmed holiday messages
-- Multiple beep times within one day
-- Beeping on specific calendar dates
+### What I'm developing right now:
+- Ability to play noises besides the monotonous buzzer, such as ```.mp3``` files or Spotify tracks.
+- A web dashboard to change the settings of the clock from anywhere in the world.
+- A snooze button (I don't need snooze on most days but I've thought of adding this more and more lately)
 
 
-### Bugs to fix / To-do list
-- finish web-app dashboard for changing clock settings from online.
-- Parsing one-word forecast from National Weather API's shortForecast description
-  - Right now, it just displays he shortForecast. Instead of 'Mostly Clear then Light Clouds' it should be 'Clear' because the LCD can only fit 16 chars on a line
+## Setup
+
+### Hardware
+- Raspberry Pi 4 (Other versions should work, but I've yet to test it on anything else.)
+- I2C 16x2 LCD Display Module
+- 5V Piezoelectric Buzzer
+- Mini Pushbutton Switches
+- Jumper Wires (M-M, M-F)
+- 10K Ohm Resistor
+
+I will post a circuit diagram once I'm finished making it.
+
+Also, GPIO pins can be configured in ```constants.py```. In case you're wondering,
+I've placed settings that I plan on allowing users to change while the clock is operating via a web dashboard in ```settings.json``` and settings that should not be changed during operation in ```constants.py```, as I hope to use the web application to send the ```json``` data to the Pi (with proper security
+precautions taken).
+
+### Software
+To install the required modules, run ```pip3 install -r requirements.txt```.
+
+Then run
+
+```sudo apt-get install python3-smbus``` and 
+```sudo apt-get install rpi.gpio```
+
+Configure as much as you'd like in ```settings.json```, then run ```python3 alarm.py```
+
 
 ### Contributing
-Want to add a feature? Create a pull request!
+Want to add a feature or fix a bug you've noticed? Create a pull request!!
 
 ![image](https://i.imgur.com/pVmyJt6.png)
+
+Clock photo as of February, 2021

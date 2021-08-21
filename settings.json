@@ -3,8 +3,8 @@
         5,
         6
     ],
-    "HOUR": 6,
-    "MINUTES": 30,
+    "ALARM_HOUR": 6,
+    "ALARM_MINUTES": 30,
     "EMAIL_ADDRESS": "",
     "EMAIL_PASSWORD": "",
     "STOCK_TICKER": "",
