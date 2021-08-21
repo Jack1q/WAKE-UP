@@ -6,6 +6,7 @@ Last updated on April 11, 2021 at 2:52 PM.
 """
 
 import processes
+import constants
 
 def start_processes(process_list):
     for process in process_list:
@@ -19,7 +20,7 @@ if __name__ == '__main__':
     process_list = [
         processes.LCDProcess(),
         processes.BuzzerProcess(),
-        processes.ButtonProcess(processes.ButtonActions.cycle_bottom_lcd, 10)    
+        processes.ButtonProcess(processes.ButtonActions.cycle_bottom_lcd, constants.CYCLE_BUTTON_PIN)    
         ]
     start_processes(process_list)
     while True:

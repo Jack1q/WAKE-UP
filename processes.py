@@ -5,6 +5,7 @@ import time
 import RPi.GPIO as GPIO
 
 import config
+import constants
 from display.lcd_display import LCD
 import messages
 
@@ -15,7 +16,7 @@ GPIO.setmode(GPIO.BOARD)
 class LCDProcess(multiprocessing.Process):
     
     lcd = LCD()
-    lcd.backlight(0)
+    lcd.backlight(constants.LCD_BACKLIGHT_STATE)
     
     def __init__(self):
         super().__init__(target=LCDProcess.update_lcd, args=(),daemon=True)
@@ -24,19 +25,18 @@ class LCDProcess(multiprocessing.Process):
     def update_lcd():
         """ Constantly updates LCD screen with time and user's chosen data to track """
         
-        DEFAULT_OPTION = 0
         while True:
 
-            # Top LCD row:
-            LCDProcess.lcd.lcd_display_string(messages.get_current_time(), 1)
+            # Top LCD Line:
+            LCDProcess.lcd.lcd_display_string(messages.get_current_time(), constants.LCD_TOP_LINE)
 
-            # Bottom LCD row:
+            # Bottom LCD Line:
             display_options = messages.get_display_options()
             try:
                 selected_option = display_options[config.get_settings_dictionary()['DISPLAY_OPTION']]
             except ValueError:
-                selected_option = display_options[DEFAULT_OPTION]
-            LCDProcess.lcd.lcd_display_string(messages.formatter(selected_option()), 2)
+                selected_option = display_options[constants.DEFAULT_DISPLAY_OPTION]
+            LCDProcess.lcd.lcd_display_string(messages.formatter(selected_option()), constants.LCD_BOTTOM_LINE)
 
 class ButtonProcess(multiprocessing.Process):
         
@@ -49,7 +49,7 @@ class ButtonProcess(multiprocessing.Process):
         last_press_time = time.time()
         while True:
             if GPIO.input(pin) == GPIO.HIGH:
-                if delay and time.time() - last_press_time < 1:
+                if delay and time.time() - last_press_time < constants.CYCLE_BUTTON_DELAY:
                     continue
                 last_press_time = time.time()
                 button_action()
@@ -71,7 +71,7 @@ class ButtonActions:
 
 class BuzzerProcess(multiprocessing.Process):
 
-    BUZZER_PIN = 23
+    BUZZER_PIN = constants.BUZZER_PIN
     GPIO.setup(BUZZER_PIN, GPIO.OUT)
     
     def __init__(self):
@@ -83,9 +83,9 @@ class BuzzerProcess(multiprocessing.Process):
 
         for _ in range(10):
             GPIO.output(BuzzerProcess.BUZZER_PIN, GPIO.HIGH)  
-            time.sleep(1)
+            time.sleep(constants.TIME_BETWEEN_BEEPS)
             GPIO.output(BuzzerProcess.BUZZER_PIN, GPIO.LOW)
-            time.sleep(1)
+            time.sleep(constants.TIME_BETWEEN_BEEPS)
 
     @staticmethod
     def is_time_to_play_sound():
@@ -94,12 +94,12 @@ class BuzzerProcess(multiprocessing.Process):
         current_time_object = datetime.datetime.now()
         current_day, current_hour, current_minutes = current_time_object.weekday(), current_time_object.hour, current_time_object.minute
         settings = config.get_settings_dictionary()
-        return current_hour == settings['HOUR'] and current_minutes == settings['MINUTES'] and current_day not in settings['SLEEP_IN_DAYS']
+        return current_hour == settings['ALARM_HOUR'] and current_minutes == settings['ALARM_MINUTES'] and current_day not in settings['SLEEP_IN_DAYS']
 
     @staticmethod
     def beeper():
         """
-        Function for beep process: continously checks if it's time to beep,
+        Function for beep process: continuously checks if it's time to beep,
         and does so if it is.
         """
         

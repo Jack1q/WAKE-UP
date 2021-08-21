@@ -1,4 +1,4 @@
-yfinance==0.1.55
+yfinance==0.1.62
 requests==2.25.1
 RPi.GPIO # this may not work directly from requirements.txt
 # will have to run sudo apt-get install python3-smbus as well
