@@ -51,6 +51,6 @@ Configure as much as you'd like in ```settings.json```, then run ```python3 alar
 ### Contributing
 Want to add a feature or fix a bug you've noticed? Create a pull request!!
 
-![image](https://i.imgur.com/pVmyJt6.png)
+![image](https://i.imgur.com/kwc1tPG.jpg)
 
 Clock photo as of February, 2021
