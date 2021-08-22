@@ -4,8 +4,8 @@ import json
 
 
 def get_settings_dictionary():
-    """ 
-    Retrieves settings dictionary. 
+    """
+    Retrieves settings dictionary.
     Note: SLEEP_IN_DAYS day notation works as follows: Mon = 0, Tue = 1, ... , Sun = 6
     """
 

@@ -1,10 +1,14 @@
+""" Module for generating countdown messages """
+
 from datetime import datetime
 class Countdown:
-    """ Calculates time until a set time. """
-    """ (also need to make alarm beep when countdown is finished) """
+    """
+    Calculates time until a set time.
+    (also need to make alarm beep when countdown is finished)
+    """
 
     def __init__(self, time_dictionary):
-        """ 
+        """
         Parses COUNTDOWN_DATETIME dictionary into datetime object.
         dict should be formatted as:
             dict = {
@@ -21,16 +25,17 @@ class Countdown:
     def get_time_delta(self):
         """ Calculates time from now until set countdown time """
         return self.countdown_time - datetime.now()
-    
+
     @staticmethod
     def format_time(time_unit):
         """ Adds leading zeroes to time units """
         if time_unit < 10:
             return "0" + str(time_unit)
         return time_unit
-    
-    def get_formatted_countdown_message(self):
-        """ Formats countdown message for clock display """
+
+    def get_pretty_countdown_message(self):
+        """ Prettifies countdown message """
+
         delta = self.get_time_delta()
         if delta.total_seconds() < 0:
             return "Countdown over."
