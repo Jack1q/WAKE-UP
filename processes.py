@@ -92,10 +92,13 @@ class BuzzerProcess(multiprocessing.Process):
         current_datetime = datetime.datetime.now()
         day, hour, minutes = current_datetime.weekday(), \
                              current_datetime.hour, current_datetime.minute
-        settings = config.get_settings_dictionary()
-        return hour == settings['ALARM_HOUR'] and \
-               minutes == settings['ALARM_MINUTES'] and \
-               day not in settings['SLEEP_IN_DAYS']
+        try:
+            settings = config.get_settings_dictionary()
+            return hour == settings['ALARM_HOUR'] and \
+                minutes == settings['ALARM_MINUTES'] and \
+                day not in settings['SLEEP_IN_DAYS']
+        except ValueError:
+            return False
 
     @staticmethod
     def beeper():
