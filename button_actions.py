@@ -9,12 +9,7 @@ def cycle_bottom_lcd():
 
     try:
         settings = config.get_settings_dictionary()
-        option = settings['DISPLAY_OPTION']
-        if option >= len(messages.get_display_options()) - 1:
-            option = 0
-        else:
-            option += 1
-        settings['DISPLAY_OPTION'] = option
+        settings['DISPLAY_OPTION'] = (settings['DISPLAY_OPTION'] + 1) % len(messages.get_display_options())
         config.update_settings_file(settings)
     except ValueError:
         pass
