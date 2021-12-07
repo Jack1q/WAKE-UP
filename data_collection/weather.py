@@ -4,7 +4,7 @@ import datetime
 
 import requests
 
-from database import Database, Column
+from .database import Database, Column
 
 
 def get_client_ip_address():
@@ -60,7 +60,7 @@ def get_latest_forecast():
 
     create_weather_db()
     database_is_empty = bool(Database().get_table_size('Forecasts') == 0)
-    current_time = datetime.datetime().now()
+    current_time = datetime.datetime.now()
     minute, second = current_time.minute, current_time.second
     if (minute % 10 == 0 and second < 5) or database_is_empty:
         print('Getting new forecast...')
