@@ -5,21 +5,13 @@ import datetime
 import requests
 
 from .database import Database, Column
+from .geo import get_client_ip_address, get_latlong_from_ip_address
 
 
-def get_client_ip_address():
-    """ Retrieve's client's public IP address """
-    return requests.get('https://api64.ipify.org/').text
-
-def get_latlong_from_ip_address(ip_address):
-    """ Gets latitude and longitude from IP address """
-    location_data = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
-    return f"{location_data['latitude']},{location_data['longitude']}"
-
-def get_weather_data_from_latlong(latlong):
+def get_weather_data_from_latlong(latitude, longitude):
     """ Accesses local weather data from the National Weather Service's API """
     # weather_data = requests.get('https://www.metaweather.com/api/location/search/?lattlong={}')
-    grid_endpoint = requests.get(f'https://api.weather.gov/points/{latlong}').json()
+    grid_endpoint = requests.get(f'https://api.weather.gov/points/{latitude},{longitude}').json()
     forecast_endpoint = requests.get(grid_endpoint['properties']['forecast']).json()
 
     next_forecast = forecast_endpoint['properties']['periods']
@@ -56,17 +48,17 @@ def store_forecast_in_db(new_forecast, is_first_value):
                               new_forecast)
 
 def get_latest_forecast():
-    """ Accesses latest local forecast data. Updates forecast every 10 minutes. """
+    """ Accesses latest local forecast data. Updates forecast every 5 minutes. """
 
     create_weather_db()
     database_is_empty = bool(Database().get_table_size('Forecasts') == 0)
     current_time = datetime.datetime.now()
     minute, second = current_time.minute, current_time.second
-    if (minute % 10 == 0 and second < 5) or database_is_empty:
+    if (minute % 5 == 0 and second < 5) or database_is_empty:
         print('Getting new forecast...')
         ip_address = get_client_ip_address()
-        latlong = get_latlong_from_ip_address(ip_address)
-        weather_data = get_weather_data_from_latlong(latlong)
+        latitude, longitude = get_latlong_from_ip_address(ip_address)
+        weather_data = get_weather_data_from_latlong(latitude, longitude)
         store_forecast_in_db(weather_data, database_is_empty)
         return weather_data
     return get_db_forecast_value()
