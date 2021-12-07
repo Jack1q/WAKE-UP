@@ -4,7 +4,7 @@ import datetime
 
 import requests
 
-from data_collection.database import Database, Column
+from database import Database, Column
 
 
 def get_client_ip_address():
@@ -70,3 +70,4 @@ def get_latest_forecast():
         store_forecast_in_db(weather_data, database_is_empty)
         return weather_data
     return get_db_forecast_value()
+
