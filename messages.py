@@ -1,6 +1,8 @@
 """
 The purpose of this module is to prepare data received from data
 collector modules to be properly displayed on the clock screen.
+Each function returns display data, and prints any error messages
+to terminal output.
 """
 
 import time
@@ -48,7 +50,8 @@ def get_forecast():
 
     try:
         return weather.get_latest_forecast()
-    except Exception:
+    except Exception as e:
+        print(e)
         return "Weather Error"
 
 def get_stock():
@@ -56,7 +59,8 @@ def get_stock():
 
     try:
         return Stock(settings['STOCK_TICKER']).get_stock_data()
-    except Exception:
+    except Exception as e:
+        print(e)
         return "Stock Error"
 
 def get_unread():
@@ -65,7 +69,8 @@ def get_unread():
     try:
         return mail.get_unread_mail_count(settings["EMAIL_ADDRESS"],
                                           settings["EMAIL_PASSWORD"])
-    except Exception:
+    except Exception as e:
+        print(e)
         return "Email Error"
 
 def get_instagram_followers():
@@ -73,7 +78,8 @@ def get_instagram_followers():
 
     try:
         return instagram.get_follower_count(settings["INSTAGRAM_USERNAME"])
-    except Exception:
+    except Exception as e:
+        print(e)
         return "IG Error"
 
 def get_daily_message():
