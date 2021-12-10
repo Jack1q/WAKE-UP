@@ -14,6 +14,7 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Display a custom message.
 - Show configurable messages on certain days, such as ```Happy Birthday``` or ```Happy Pi Day!```
 - Count down until a certain date and/or time.
+- Display the local sunset / sunrise times.
 
 ### What I'm developing right now:
 - Ability to play noises besides the monotonous buzzer, such as ```.mp3``` files or Spotify tracks.
