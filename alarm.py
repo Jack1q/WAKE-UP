@@ -6,12 +6,13 @@ Last updated on April 11, 2021 at 2:52 PM.
 """
 
 import processes
-
+import threads
 
 if __name__ == '__main__':
 
     process_manager = processes.ProcessManager()
     process_manager.start_processes()
+    threads.ThreadManager().start_threads()
 
     while True:
         if input():

@@ -11,5 +11,5 @@ def get_latlong_from_ip_address(ip_address):
     """ Gets latitude and longitude from IP address """
 
     location_data = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
+    print(location_data)
     return location_data['latitude'], location_data['longitude']
-

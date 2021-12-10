@@ -1,4 +1,7 @@
-""" Module for creating and managing sqlite3 databases """
+"""
+Module for creating and managing sqlite3 databases
+** Currently deprecated **
+"""
 
 import os
 import sqlite3
@@ -61,16 +64,3 @@ class Database:
     def close_connection(self):
         """ Closes database connection """
         self.connection.close()
-
-
-# Test - the code below currently works
-# db = Database()
-# db.create_new_table('Forecasts', [Column('Description','TEXT')])
-# # db.add_to_table('Forecasts', [Column('Description','TEXT','72F Sunny')])
-# val = db.get_value_from_table('Forecasts', 'Description')[-1][0]
-# print(val)
-# db.update_value('Forecasts',Column('Description','TEXT',val),'70F Cloudy')
-# new_val = db.get_value_from_table('Forecasts', 'Description')[0][0]
-# print(new_val)
-# print(db.get_table_size('Forecasts'))
-# db.close_connection()
