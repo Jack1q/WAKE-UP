@@ -48,7 +48,7 @@ class SunThread(threading.Thread):
 
         if date is None:
             date = datetime.datetime.now()
-        return (datetime.datetime(year=date.year, month=date.month, day=date.day) - date).seconds
+        return (datetime.datetime(year=date.year, month=date.month, day=date.day + 1) - date).seconds
 
     def update_sun(self):
         """ updates sunset / sunrise data """
