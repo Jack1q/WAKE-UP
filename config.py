@@ -3,18 +3,42 @@
 import json
 
 
+def get_json_dictionary(filename):
+    """
+    Retrieves dictionary from json file.
+    """
+
+    with open(filename, 'r') as file:
+        return json.load(file)
+
+def update_json_file(filename, updated_dictionary):
+    """ Saves updated dict to json file """
+
+    with open(filename, 'w') as file:
+        file.write(json.dumps(updated_dictionary, indent=4))
+
+
 def get_settings_dictionary():
     """
     Retrieves settings dictionary.
     Note: SLEEP_IN_DAYS day notation works as follows: Mon = 0, Tue = 1, ... , Sun = 6
     """
 
-    with open('settings.json', 'r') as settings_file:
-        return json.load(settings_file)
+    return get_json_dictionary('settings.json')
 
 
 def update_settings_file(updated_dictionary):
     """ Saves updated settings dict to settings.json """
 
-    with open('settings.json', 'w') as settings_file:
-        settings_file.write(json.dumps(updated_dictionary, indent=4))
+    update_json_file('settings.json', updated_dictionary)
+
+
+def get_data_dictionary():
+    """ retrieves data json as dictionary """
+
+    return get_json_dictionary('data.json')
+
+def update_data_file(updated_dictionary):
+    """ Saves updated data dict to data.json """
+
+    update_json_file('data.json', updated_dictionary)

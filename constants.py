@@ -15,3 +15,4 @@ LCD_LINE_LENGTH = 16 # unit: Characters
 MIDNIGHT = 0
 NOON = 12
 SIX_PM = 18
+EST = -5 # hours from UTC; eventually, make timezone calculation part of geo.py

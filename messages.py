@@ -8,7 +8,6 @@ to terminal output.
 import time
 import datetime
 
-import data_collection.weather as weather
 from data_collection.stocks import Stock
 import data_collection.mail as mail
 import data_collection.instagram as instagram
@@ -16,7 +15,15 @@ from data_collection.countdown import Countdown
 import config
 import constants
 
-settings = config.get_settings_dictionary()
+def get_settings():
+    """ returns settings dict """
+
+    return config.get_settings_dictionary()
+
+def get_data():
+    """ returns data dict """
+
+    return config.get_data_dictionary()
 
 def fix_length(message):
     """ Ensures message length equals LCD_LINE_LENGTH """
@@ -49,15 +56,25 @@ def get_forecast():
     """ Returns weather forecast message """
 
     try:
-        return weather.get_latest_forecast()
+        return get_data()['forecast']
     except Exception as e:
         print(e)
         return "Weather Error"
+
+def get_sun():
+    """ returns sunrise/sunset message """
+    try:
+        data = get_data()
+        return "Sun: " + data['sunrise'] + "|" + data['sunset']
+    except Exception as e:
+        print(e)
+        return "sunset error"
 
 def get_stock():
     """ Returns stock data message"""
 
     try:
+        settings = get_settings()
         return Stock(settings['STOCK_TICKER']).get_stock_data()
     except Exception as e:
         print(e)
@@ -67,6 +84,7 @@ def get_unread():
     """ Returns unread email count message """
 
     try:
+        settings = get_settings()
         return mail.get_unread_mail_count(settings["EMAIL_ADDRESS"],
                                           settings["EMAIL_PASSWORD"])
     except Exception as e:
@@ -77,7 +95,7 @@ def get_instagram_followers():
     """ Returns IG follow count message """
 
     try:
-        return instagram.get_follower_count(settings["INSTAGRAM_USERNAME"])
+        return instagram.get_follower_count(get_settings()["INSTAGRAM_USERNAME"])
     except Exception as e:
         print(e)
         return "IG Error"
@@ -86,7 +104,7 @@ def get_daily_message():
     """ Returns daily message if one exists, otherwise time-based greeting """
 
     today = time.strftime('%m-%d')
-    daily_messages = settings['DAILY_MESSAGES']
+    daily_messages = get_settings()['DAILY_MESSAGES']
     if today in daily_messages:
         return daily_messages[today]
     hour = datetime.datetime.now().hour
@@ -99,12 +117,12 @@ def get_daily_message():
 def get_custom_message():
     """ Returns custom message from settings """
 
-    return settings["CUSTOM_MESSAGE"]
+    return get_settings()["CUSTOM_MESSAGE"]
 
 def get_countdown():
     """ Returns countdown message """
 
-    return Countdown(settings["COUNTDOWN_DATETIME"]).get_pretty_countdown_message()
+    return Countdown(get_settings()["COUNTDOWN_DATETIME"]).get_pretty_countdown_message()
 
 def get_display_options():
     """ Returns list of display options for BOTTOM ROW """
@@ -117,5 +135,6 @@ def get_display_options():
         get_instagram_followers,
         get_daily_message,
         get_custom_message,
-        get_countdown
+        get_countdown,
+        get_sun
     ]
