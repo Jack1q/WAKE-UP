@@ -3,6 +3,7 @@ Module for handling background threading operations
 """
 
 import datetime
+import subprocess
 import threading
 import time
 
@@ -101,6 +102,12 @@ class BuzzerThread(threading.Thread):
     @staticmethod
     def play_sound():
         """ Plays piezoelectric buzzer to wake me up """
+
+        settings = config.get_settings_dictionary()
+        if settings['MP3_ENABLED']:
+            # note: will allow more freedom to choose song later
+            # for now it's hardcoded
+            subprocess.run(['mpg123', 'music/chant.mp3'])
 
         for _ in range(10):
             GPIO.output(BuzzerThread.BUZZER_PIN, GPIO.HIGH)
