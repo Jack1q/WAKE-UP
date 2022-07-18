@@ -7,11 +7,12 @@ to terminal output.
 
 import time
 import datetime
+import logging
 
-from data_collection.stocks import Stock
-import data_collection.mail as mail
-import data_collection.instagram as instagram
-from data_collection.countdown import Countdown
+from utils.stocks import Stock
+import utils.mail as mail
+import utils.instagram as instagram
+from utils.countdown import Countdown
 import config
 import constants
 
@@ -58,7 +59,7 @@ def get_forecast():
     try:
         return get_data()['forecast']
     except Exception as e:
-        print(e)
+        logging.error("error fetching weather data: %s", e)
         return "Weather Error"
 
 def get_sun():
@@ -67,7 +68,7 @@ def get_sun():
         data = get_data()
         return "Sun: " + data['sunrise'] + "|" + data['sunset']
     except Exception as e:
-        print(e)
+        logging.error("error fetching sunset & sunrise data: %s", e)
         return "sunset error"
 
 def get_stock():
@@ -77,7 +78,7 @@ def get_stock():
         settings = get_settings()
         return Stock(settings['STOCK_TICKER']).get_stock_data()
     except Exception as e:
-        print(e)
+        logging.error("error fetching stock data: %s", e)
         return "Stock Error"
 
 def get_unread():
@@ -88,7 +89,7 @@ def get_unread():
         return mail.get_unread_mail_count(settings["EMAIL_ADDRESS"],
                                           settings["EMAIL_PASSWORD"])
     except Exception as e:
-        print(e)
+        logging.error("error fetching unread emails: %s", e)
         return "Email Error"
 
 def get_instagram_followers():
@@ -97,7 +98,7 @@ def get_instagram_followers():
     try:
         return instagram.get_follower_count(get_settings()["INSTAGRAM_USERNAME"])
     except Exception as e:
-        print(e)
+        logging.error("error fetching IG followers: %s", e)
         return "IG Error"
 
 def get_daily_message():

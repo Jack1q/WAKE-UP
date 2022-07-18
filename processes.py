@@ -5,6 +5,7 @@ import multiprocessing
 import config
 import constants
 from display.lcd_display import LCD
+import logging
 import messages
 
 
@@ -17,6 +18,8 @@ class LCDProcess(multiprocessing.Process):
     lcd.backlight(constants.LCD_BACKLIGHT_STATE)
 
     def __init__(self):
+        if constants.DEBUG:
+            logging.info("starting LCD process")
         super().__init__(target=LCDProcess.update_lcd, args=(), daemon=True)
 
     @staticmethod
@@ -32,7 +35,7 @@ class LCDProcess(multiprocessing.Process):
             display_options = messages.get_display_options()
             try:
                 settings = config.get_settings_dictionary()
-                selected_option = display_options[settings['DISPLAY_OPTION']]
+                selected_option = display_options[settings['DISPLAY_OPTION'] % len(display_options)]
             except ValueError:
                 selected_option = display_options[constants.DEFAULT_DISPLAY_OPTION]
             message = messages.fix_length(selected_option())
@@ -49,12 +52,14 @@ class ProcessManager:
 
     def start_processes(self):
         """ Starts all processes in use """
-
+        if constants.DEBUG:
+            logging.info("starting processes")
         for process in self.processes_in_use:
             process.start()
 
     def terminate_processes(self):
         """ Terminates all processes in use """
-
+        if constants.DEBUG:
+            logging.info("terminating processes")
         for process in self.processes_in_use:
             process.terminate()

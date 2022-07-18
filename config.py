@@ -1,7 +1,7 @@
 """ Module for managing configuration / settings """
 
 import json
-
+import logging
 
 def get_json_dictionary(filename):
     """
@@ -42,3 +42,7 @@ def update_data_file(updated_dictionary):
     """ Saves updated data dict to data.json """
 
     update_json_file('data.json', updated_dictionary)
+
+def begin_log():
+    logging.basicConfig(filename="alarm.log", level=logging.INFO)
+

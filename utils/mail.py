@@ -1,6 +1,7 @@
 """ Access info from mail inbox """
 
 import imaplib
+import logging
 
 def get_unread_mail_count(address, password):
     """
@@ -16,6 +17,7 @@ def get_unread_mail_count(address, password):
         imap_object.login(address, password)
         imap_object.select()
         number_unread = str(len(imap_object.search(None, 'UnSeen')[1][0].split()))
-    except Exception:
+    except Exception as e:
+        logging.error("error loading mail data: %s", e)
         number_unread = '?'
     return number_unread + ' unread'

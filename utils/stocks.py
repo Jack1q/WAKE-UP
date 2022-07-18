@@ -1,14 +1,18 @@
 """ Module for fetching stock data """
 
 from yfinance import Ticker
+import logging
 
 class Stock:
     """ Accesses current values of a stock from its ticker """
     def __init__(self, ticker):
         self.ticker = ticker
-        stock_history = Ticker(ticker).history()
-        self.yesterday_closing_price = stock_history.iat[-2, -4]
-        self.current_price = stock_history.iat[-1, -4]
+        try:
+            stock_history = Ticker(ticker).history()
+            self.yesterday_closing_price = stock_history.iat[-2, -4]
+            self.current_price = stock_history.iat[-1, -4]
+        except Exception as e:
+            logging.error("error loading stock data: %s", e)
 
     def get_day_over_day_percent_change(self):
         """ Calculates the percent change of the stock between yesterday and today """
