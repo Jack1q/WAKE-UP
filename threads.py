@@ -11,8 +11,9 @@ import RPi.GPIO as GPIO
 import button_actions
 import config
 import constants
-from data_collection.weather import get_latest_forecast
-from data_collection.sun import formatted_local_setrise
+import logging
+from utils.weather import get_latest_forecast
+from utils.sun import formatted_local_setrise
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -21,6 +22,8 @@ class WeatherThread(threading.Thread):
     """ class for handling weather data updating """
 
     def __init__(self, data_lock):
+        if constants.DEBUG:
+            logging.info("starting weather thread")
         super().__init__(target=self.update_weather, args=(), daemon=True)
         self.data_lock = data_lock
 
@@ -29,6 +32,8 @@ class WeatherThread(threading.Thread):
 
         while True:
             with self.data_lock:
+                if constants.DEBUG:
+                    logging.info("fetching weather data")
                 data = config.get_data_dictionary()
                 data['forecast'] = get_latest_forecast()
                 config.update_data_file(data)
@@ -39,6 +44,8 @@ class SunThread(threading.Thread):
     """ class for handling sunrise & sunset data updating """
 
     def __init__(self, data_lock):
+        if constants.DEBUG:
+            logging.info("starting sunrise/sunset data thread")
         super().__init__(target=self.update_sun, args=(), daemon=True)
         self.data_lock = data_lock
 
@@ -57,10 +64,12 @@ class SunThread(threading.Thread):
             with self.data_lock:
                 data = config.get_data_dictionary()
                 # later, fetch timezone from lat/long
-                sunrise, sunset = formatted_local_setrise(constants.EST)
-                data['sunset'] = sunset
-                data['sunrise'] = sunrise
-                config.update_data_file(data)
+                sun_tuple = formatted_local_setrise(constants.EST)
+                if sun_tuple:
+                    sunrise, sunset = sun_tuple
+                    data['sunset'] = sunset
+                    data['sunrise'] = sunrise
+                    config.update_data_file(data)
             # wait until next day (plus 10 seconds) to update
             time.sleep(SunThread.seconds_to_midnight() + 10)
 

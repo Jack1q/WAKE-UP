@@ -7,7 +7,7 @@
     "ALARM_MINUTES": 30,
     "EMAIL_ADDRESS": "",
     "EMAIL_PASSWORD": "",
-    "STOCK_TICKER": "",
+    "STOCK_TICKER": "GME",
     "CUSTOM_MESSAGE": "Hello world!",
     "INSTAGRAM_USERNAME": "instagram",
     "COUNTDOWN_DATETIME": {
@@ -17,10 +17,10 @@
         "hour": 0,
         "minute": 0
     },
-    "DISPLAY_OPTION" : 0,
-    "DAILY_MESSAGES" : {
-        "03-14" : "Happy Pi Day!",
-        "09-09" : "Happy Birthday!",
-        "12-25" : "Merry Christmas"
+    "DISPLAY_OPTION": 1,
+    "DAILY_MESSAGES": {
+        "03-14": "Happy Pi Day!",
+        "09-09": "Happy Birthday!",
+        "12-25": "Merry Christmas"
     }
 }

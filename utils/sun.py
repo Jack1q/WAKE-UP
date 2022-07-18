@@ -68,7 +68,10 @@ def raw_minutes_to_time(mins, utc):
 def formatted_local_setrise(utc):
     """ returns tuple for (rise, set) """
 
-    latitude, longitude, = get_latlong_from_ip_address(get_client_ip_address())
+    latlong_tuple = get_latlong_from_ip_address(get_client_ip_address())
+    if latlong_tuple is None:
+        return None
+    latitude, longitude, = latlong_tuple
     gamma = get_fractional_year()
     decl = get_solar_declination_angle(gamma)
     eqtime = get_equation_of_time(gamma)

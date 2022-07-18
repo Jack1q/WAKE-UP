@@ -3,6 +3,7 @@
 # import datetime
 
 import requests
+import logging
 
 # from .database import Database, Column
 from .geo import get_client_ip_address, get_latlong_from_ip_address
@@ -22,7 +23,11 @@ def get_weather_data_from_latlong(latitude, longitude):
 
 def get_latest_forecast():
     """ gets latest forecast at current coordinates """
-    latitude, longitude = get_latlong_from_ip_address(get_client_ip_address())
+    latlong_tuple = get_latlong_from_ip_address(get_client_ip_address())
+    if latlong_tuple is None:
+        logging.error("Error fetching weather data.")
+        return "Error"
+    latitude, longitude = latlong_tuple
     return get_weather_data_from_latlong(latitude, longitude)
 
 
