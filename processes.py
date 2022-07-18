@@ -4,7 +4,7 @@ import multiprocessing
 
 import config
 import constants
-from display.lcd_display import LCD
+from display.lcd_display import LCD #, LCD_CLEARDISPLAY
 import logging
 import messages
 
@@ -40,6 +40,15 @@ class LCDProcess(multiprocessing.Process):
                 selected_option = display_options[constants.DEFAULT_DISPLAY_OPTION]
             message = messages.fix_length(selected_option())
             LCDProcess.lcd.lcd_display_string(message, constants.LCD_BOTTOM_LINE)
+    
+    @staticmethod
+    def clear_lcd():
+        """ clears LCD screen """
+
+        # LCDProcess.lcd.lcd_write(LCD_CLEARDISPLAY)
+        blank_line = " " * 16
+        LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_TOP_LINE)
+        LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_BOTTOM_LINE)
 
 
 class ProcessManager:
@@ -63,3 +72,5 @@ class ProcessManager:
             logging.info("terminating processes")
         for process in self.processes_in_use:
             process.terminate()
+        # Clear LCD
+        LCDProcess.clear_lcd()
