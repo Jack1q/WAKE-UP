@@ -1,5 +1,8 @@
 """ Mostly hardware-related constants """
 
+# DEBUG
+DEBUG = True
+
 # CHANGE IF YOU WANT
 BUZZER_PIN = 23
 CYCLE_BUTTON_PIN = 10
