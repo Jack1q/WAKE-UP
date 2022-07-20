@@ -18,6 +18,6 @@ def get_unread_mail_count(address, password):
         imap_object.select()
         number_unread = str(len(imap_object.search(None, 'UnSeen')[1][0].split()))
     except Exception as e:
-        logging.error("error loading mail data: %s", e)
-        number_unread = '?'
+        logging.info("error loading mail data: %s", e)
+        return None
     return number_unread + ' unread'

@@ -1,21 +1,30 @@
 """ Module for creating and managing Clock processes """
 
-import multiprocessing
 
 import config
 import constants
-from display.lcd_display import LCD #, LCD_CLEARDISPLAY
+
 import logging
 import messages
+import multiprocessing
+import time
 
+if not constants.VIRTUAL_HARDWARE:
+    try:
+        from display.lcd_display import LCD #, LCD_CLEARDISPLAY
+    except ImportError as e:
+        print("Could not import LCD module into processes", e)
+        if constants.DEBUG:
+            logging.info("error importing lcd module into processes: %s", e)
 
 
 
 class LCDProcess(multiprocessing.Process):
     """ Process for manipulating and updating Clock screen with relevant data """
 
-    lcd = LCD()
-    lcd.backlight(constants.LCD_BACKLIGHT_STATE)
+    if not constants.VIRTUAL_HARDWARE:
+        lcd = LCD()
+        lcd.backlight(constants.LCD_BACKLIGHT_STATE)
 
     def __init__(self):
         if constants.DEBUG:
@@ -25,11 +34,15 @@ class LCDProcess(multiprocessing.Process):
     @staticmethod
     def update_lcd():
         """ Constantly updates LCD screen with time and user's chosen data to track """
-
+        config.begin_log()
         while True:
-
             # Top LCD Line:
-            LCDProcess.lcd.lcd_display_string(messages.get_current_time(), constants.LCD_TOP_LINE)
+            current_time = messages.get_current_time()
+            if constants.VIRTUAL_HARDWARE:
+                current_time +=  ' ' * (16 - len(current_time))
+                print('VIRTUAL SCREEN:', '\n+' + '-' * 18 + '+\n|', current_time, '|')
+            else:
+                LCDProcess.lcd.lcd_display_string(current_time, constants.LCD_TOP_LINE)
 
             # Bottom LCD Line:
             display_options = messages.get_display_options()
@@ -39,16 +52,24 @@ class LCDProcess(multiprocessing.Process):
             except ValueError:
                 selected_option = display_options[constants.DEFAULT_DISPLAY_OPTION]
             message = messages.fix_length(selected_option())
-            LCDProcess.lcd.lcd_display_string(message, constants.LCD_BOTTOM_LINE)
+            if constants.VIRTUAL_HARDWARE:
+                # add extra spaces to message if needed so it fits virtual 'screen'
+                message += ' ' * (16 - len(message))
+                print('|', message, '|\n+' + '-' * 18 + '+')
+            else:
+                LCDProcess.lcd.lcd_display_string(message, constants.LCD_BOTTOM_LINE)
+            if constants.VIRTUAL_HARDWARE:
+                time.sleep(3)
     
     @staticmethod
     def clear_lcd():
         """ clears LCD screen """
-
-        # LCDProcess.lcd.lcd_write(LCD_CLEARDISPLAY)
-        blank_line = " " * 16
-        LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_TOP_LINE)
-        LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_BOTTOM_LINE)
+        
+        if not constants.VIRTUAL_HARDWARE:
+            # LCDProcess.lcd.lcd_write(LCD_CLEARDISPLAY)
+            blank_line = " " * 16
+            LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_TOP_LINE)
+            LCDProcess.lcd.lcd_display_string(blank_line, constants.LCD_BOTTOM_LINE)
 
 
 class ProcessManager:
@@ -73,4 +94,5 @@ class ProcessManager:
         for process in self.processes_in_use:
             process.terminate()
         # Clear LCD
-        LCDProcess.clear_lcd()
+        if not constants.VIRTUAL_HARDWARE:
+            LCDProcess.clear_lcd()
