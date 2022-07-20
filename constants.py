@@ -2,6 +2,7 @@
 
 # DEBUG
 DEBUG = True
+VIRTUAL_HARDWARE = True # Emulating LCD, buzzer behavior
 
 # CHANGE IF YOU WANT
 BUZZER_PIN = 23

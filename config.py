@@ -44,5 +44,6 @@ def update_data_file(updated_dictionary):
     update_json_file('data.json', updated_dictionary)
 
 def begin_log():
-    logging.basicConfig(filename="alarm.log", level=logging.INFO)
+    logging.basicConfig(format = '%(asctime)s %(message)s', datefmt = '%m/%d/%Y %I:%M', 
+        filename="alarm.log", level=logging.INFO)
 

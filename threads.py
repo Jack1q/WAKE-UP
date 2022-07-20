@@ -3,20 +3,20 @@ Module for handling background threading operations
 """
 
 import datetime
+import logging
 import threading
 import time
-
-import RPi.GPIO as GPIO
 
 import button_actions
 import config
 import constants
-import logging
 from utils.weather import get_latest_forecast
 from utils.sun import formatted_local_setrise
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+if not constants.VIRTUAL_HARDWARE:
+    import RPi.GPIO as GPIO
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
 
 class WeatherThread(threading.Thread):
     """ class for handling weather data updating """
@@ -87,7 +87,6 @@ class ButtonThread(threading.Thread):
 
     def button_thread_function(self, delay=True):
         """ General function for executing button actions """
-
         GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         last_press_time = time.time()
         while True:
@@ -101,8 +100,9 @@ class ButtonThread(threading.Thread):
 class BuzzerThread(threading.Thread):
     """ Thread for managing alarm clock buzzer sounds (and eventually mp3 sounds) """
 
-    BUZZER_PIN = constants.BUZZER_PIN
-    GPIO.setup(BUZZER_PIN, GPIO.OUT)
+    if not constants.VIRTUAL_HARDWARE:
+        BUZZER_PIN = constants.BUZZER_PIN
+        GPIO.setup(BUZZER_PIN, GPIO.OUT)
 
     def __init__(self):
         super().__init__(target=BuzzerThread.beeper, args=(), daemon=True)
@@ -110,7 +110,6 @@ class BuzzerThread(threading.Thread):
     @staticmethod
     def play_sound():
         """ Plays piezoelectric buzzer to wake me up """
-
         for _ in range(10):
             GPIO.output(BuzzerThread.BUZZER_PIN, GPIO.HIGH)
             time.sleep(constants.TIME_BETWEEN_BEEPS)
@@ -151,11 +150,13 @@ class ThreadManager:
         settings_lock = threading.Lock()
         self.threads = [
             WeatherThread(data_lock),
-            SunThread(data_lock),
-            ButtonThread(button_actions.cycle_bottom_lcd,
-                         constants.CYCLE_BUTTON_PIN, settings_lock),
-            BuzzerThread()
+            SunThread(data_lock)
         ]
+        if not constants.VIRTUAL_HARDWARE:
+            self.threads.append(ButtonThread(button_actions.cycle_bottom_lcd,
+                         constants.CYCLE_BUTTON_PIN, settings_lock))
+            self.threads.append(BuzzerThread())
+
 
     def start_threads(self):
         """ starts all threads """
