@@ -7,6 +7,12 @@
 # Jack Donofrio                                                     #
 #####################################################################
 
+
+if [[ -f alarm.log ]]; then
+  echo "clearing last alarm.log..."
+  rm alarm.log
+fi
+
 echo Starting up clock...
 python3 alarm.py
 

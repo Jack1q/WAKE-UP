@@ -13,7 +13,7 @@ def get_latlong_from_ip_address(ip_address):
 
     location_data = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
     if 'error' in location_data and location_data['error']:
-        logging.error("IP address location API error - %s", location_data['reason'])
+        logging.info("IP address location API error - %s", location_data['reason'])
         return None
     # logging.info("location data %s", location_data)
     return location_data['latitude'], location_data['longitude']

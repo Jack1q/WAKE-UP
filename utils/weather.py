@@ -12,21 +12,25 @@ from .geo import get_client_ip_address, get_latlong_from_ip_address
 def get_weather_data_from_latlong(latitude, longitude):
     """ Accesses local weather data from the National Weather Service's API """
     # weather_data = requests.get('https://www.metaweather.com/api/location/search/?lattlong={}')
-    grid_endpoint = requests.get(f'https://api.weather.gov/points/{latitude},{longitude}').json()
-    forecast_endpoint = requests.get(grid_endpoint['properties']['forecast']).json()
+    try:
+        grid_endpoint = requests.get(f'https://api.weather.gov/points/{latitude},{longitude}').json()
+        forecast_endpoint = requests.get(grid_endpoint['properties']['forecast']).json()
 
-    next_forecast = forecast_endpoint['properties']['periods']
-    temperature = str(next_forecast[0]['temperature']) + 'F'
-    forecast_description = next_forecast[0]['shortForecast']
+        next_forecast = forecast_endpoint['properties']['periods']
+        temperature = str(next_forecast[0]['temperature']) + 'F'
+        forecast_description = next_forecast[0]['shortForecast']
 
-    return temperature + ' ' + forecast_description
+        return temperature + ' ' + forecast_description
+    except Exception as e:
+        logging.info("error fetching weather data: %s", e)
+        return None
 
 def get_latest_forecast():
     """ gets latest forecast at current coordinates """
     latlong_tuple = get_latlong_from_ip_address(get_client_ip_address())
     if latlong_tuple is None:
-        logging.error("Error fetching weather data.")
-        return "Error"
+        logging.info("Error fetching weather data.")
+        return None
     latitude, longitude = latlong_tuple
     return get_weather_data_from_latlong(latitude, longitude)
 
