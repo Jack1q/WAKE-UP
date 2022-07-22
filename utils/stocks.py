@@ -12,7 +12,7 @@ class Stock:
             self.yesterday_closing_price = stock_history.iat[-2, -4]
             self.current_price = stock_history.iat[-1, -4]
         except Exception as e:
-            logging.error("error loading stock data: %s", e)
+            logging.info("error loading stock data: %s", e)
 
     def get_day_over_day_percent_change(self):
         """ Calculates the percent change of the stock between yesterday and today """

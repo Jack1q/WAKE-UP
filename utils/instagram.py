@@ -12,5 +12,5 @@ def get_follower_count(username):
         user_data = get_instagram_userdata(username).json()
         return "Insta: " + str(user_data['graphql']['user']['edge_followed_by']['count'])
     except Exception as e:
-        logging.error("could not fetch instagram followers from API: %s", e)
-        return "IG Error"
+        logging.info("could not fetch instagram followers from API: %s", e)
+        return None
