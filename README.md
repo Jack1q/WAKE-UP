@@ -1,4 +1,4 @@
-# wake-me-up
+# alarmpi
 This repository contains the code for operating my Raspberry Pi alarm clock.
 
 Feel free to clone this code for your own use, or fork this repository and make a pull request if there's anything you'd like to see added.
