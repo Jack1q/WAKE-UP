@@ -3,7 +3,11 @@
     margin-bottom: 20px;
 }
 
-.identicon {
+.input-group>input.time-input {
+    flex: 0 1 39%;
+}
+
+/* .identicon {
     height: 35px;
     width: 35px;
     margin-right: 7px;
@@ -12,7 +16,7 @@
     height: 30px;
     width: 30px;
     margin-right: 7px;
-}
+} */
 
 .row {
     margin-top: 2px;
