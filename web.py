@@ -22,6 +22,8 @@ class SettingsForm(FlaskForm):
     email_password = None
     instagram_username = StringField("Instagram Username", validators=[Length(max=25)])
 
+    # next step - setup display picker
+
     # countdown_year = IntegerField('Year')
     # countdown_month = IntegerField('Month')
     # countdown_day = IntegerField('Day')
@@ -88,7 +90,7 @@ def home():
             getattr(form, str(i)).data = i in settings["SLEEP_IN_DAYS"]
         getattr(form, str(i)).data = settings["SLEEP_IN_DAYS"]
 
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, icons=False) # icons can be enabled if you want
 
 
 @app.route('/about')
