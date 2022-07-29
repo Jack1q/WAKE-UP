@@ -63,15 +63,14 @@
                     {{ form.hidden_tag() }}
                     <fieldset class="form-group">
 
-                        <div class="fw-bold mb-1"><i class="bi bi-sun-fill"> </i>Alarm Time (Military)</div>
-                        {% if form.alarm_hour.errors or form.alarm_minute.errors %}
-                            {% for error in form.alarm_hour.errors %}
-                                <div class="alert alert-danger">{{ error }}</div>
-                            {% endfor %}
-                            {% for error in form.alarm_minute.errors %}
-                                <div class="alert alert-danger">{{ error }}</div>
-                            {% endfor %}
-                        {% endif %}
+                        <div class="fw-bold"><i class="bi bi-sun-fill"> </i>Alarm Time</div>
+                        <small>Time is in military format.</small>
+                        {% for error in form.alarm_hour.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                        {% for error in form.alarm_minute.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
                         <div class="input-group mb-3">
                             {{ form.alarm_hour(class="form-control time-input", placeholder="Hour") }}
                             <span class="input-group-text">:</span>
@@ -95,6 +94,29 @@
                         <div class="form-group mb-3">
                             {{ form.custom_message(class="form-control", placeholder="Message") }}
                         </div>
+
+                        {{ form.youtube.label(class="fw-bold") }}
+                        <br>
+                        <small>Can be a playlist or video. If a playlist is linked, a random video from it will be played.</small>
+                        {% for error in form.youtube.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                        <div class="form-group mb-3">
+                          {% if form.buzzer_enabled.data %}
+                            {{ form.youtube(class="form-control", disabled=true) }}
+                          {% else %}
+                            {{ form.youtube(class="form-control") }}
+                          {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                          {{ form.buzzer_enabled(class="form-check-input") }}
+                          {{ form.buzzer_enabled.label(class="form-check-label") }}
+                        </div>
+
+
+
+
                         <i class="bi bi-currency-dollar"> </i>
                         {{ form.stock_ticker.label(class="fw-bold mb-1") }}
                         <div class="form-group mb-3">
@@ -125,5 +147,11 @@
     </main>
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+      $("input[id='buzzer_enabled']").change(function(){
+        document.getElementById("youtube").disabled = $(this).is(":checked");
+      });
+    </script>
   </body>
 </html>

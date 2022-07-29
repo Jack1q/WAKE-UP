@@ -1,9 +1,10 @@
 import calendar
+import re
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_wtf import FlaskForm
 from numpy import save
-from wtforms import IntegerField, StringField, SubmitField, BooleanField, SelectMultipleField, FieldList
-from wtforms.validators import Length, ValidationError
+from wtforms import IntegerField, StringField, SubmitField, BooleanField
+from wtforms.validators import Length, ValidationError, Regexp, Optional
 
 import config
 
@@ -18,6 +19,12 @@ class SettingsForm(FlaskForm):
     custom_message = StringField("Custom Message", validators=[Length(max=16)])
     alarm_hour = IntegerField("Alarm Hour")
     alarm_minute = IntegerField("Alarm Minute")
+    buzzer_enabled = BooleanField("Enable Buzzer (instead of YouTube)")
+    youtube = StringField("Youtube Link", 
+        validators=[Optional(), Regexp(regex="(https://(www\.)?)?youtube\.com/((watch\?v)|(playlist\?list))=.*", 
+        flags=re.IGNORECASE, message="Must be a valid YouTube link.")])
+        # note - validation doesn't check if link actually *works* which could cause bugs
+        # though this may be tackled from clock side
     email_address = None
     email_password = None
     instagram_username = StringField("Instagram Username", validators=[Length(max=25)])
@@ -67,6 +74,14 @@ def home():
             settings["ALARM_HOUR"] = form.alarm_hour.data
         if form.alarm_minute.data != settings["ALARM_MINUTES"]:
             settings["ALARM_MINUTES"] = form.alarm_minute.data
+        if form.buzzer_enabled.data != settings["BUZZER_ENABLED"]:
+            settings["BUZZER_ENABLED"] = form.buzzer_enabled.data
+            buzzer_changed = True
+        else:
+            buzzer_changed = False
+        # added this check so that enabling buzzer doesn't overwrite saved link
+        if not buzzer_changed and (form.youtube.data != settings["YOUTUBE_LINK"]):
+            settings["YOUTUBE_LINK"] = form.youtube.data
 
         for e in range(len(calendar.day_name)):
             sleep_in = getattr(form, str(e)).data
@@ -85,6 +100,8 @@ def home():
         form.instagram_username.data = settings["INSTAGRAM_USERNAME"]
         form.alarm_hour.data = prettify_num(settings["ALARM_HOUR"])
         form.alarm_minute.data = prettify_num(settings["ALARM_MINUTES"])
+        form.youtube.data = settings["YOUTUBE_LINK"]
+        form.buzzer_enabled.data = settings["BUZZER_ENABLED"]
         # form.sleep_in_monday.data = 0 in settings["SLEEP_IN_DAYS"]
         for i in range(len(calendar.day_name)):
             getattr(form, str(i)).data = i in settings["SLEEP_IN_DAYS"]
