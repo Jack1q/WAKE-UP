@@ -1,15 +1,15 @@
 {
     "SLEEP_IN_DAYS": [
-        5,
-        6
+        6,
+        5
     ],
-    "ALARM_HOUR": 6,
-    "ALARM_MINUTES": 30,
+    "ALARM_HOUR": 7,
+    "ALARM_MINUTES": 9,
     "EMAIL_ADDRESS": "",
     "EMAIL_PASSWORD": "",
-    "STOCK_TICKER": "GME",
-    "CUSTOM_MESSAGE": "Hello world!",
-    "INSTAGRAM_USERNAME": "instagram",
+    "STOCK_TICKER": "",
+    "CUSTOM_MESSAGE": "",
+    "INSTAGRAM_USERNAME": "",
     "COUNTDOWN_DATETIME": {
         "year": 2022,
         "month": 1,
@@ -17,6 +17,8 @@
         "hour": 0,
         "minute": 0
     },
+    "BUZZER_ENABLED": true,
+    "YOUTUBE_LINK": null,
     "DISPLAY_OPTION": 1,
     "DAILY_MESSAGES": {
         "03-14": "Happy Pi Day!",
