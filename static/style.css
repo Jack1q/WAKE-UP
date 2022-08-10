@@ -1,0 +1,24 @@
+.navbar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input-group>input.time-input {
+    flex: 0 1 39%;
+}
+
+/* .identicon {
+    height: 35px;
+    width: 35px;
+    margin-right: 7px;
+}
+.identicon-sm {
+    height: 30px;
+    width: 30px;
+    margin-right: 7px;
+} */
+
+.row {
+    margin-top: 2px;
+    margin-bottom: 15px;
+}

@@ -6,6 +6,7 @@ import datetime
 import logging
 import threading
 import time
+import webbrowser
 
 import button_actions
 import config
@@ -115,16 +116,27 @@ class BuzzerThread(threading.Thread):
             time.sleep(constants.TIME_BETWEEN_BEEPS)
             GPIO.output(BuzzerThread.BUZZER_PIN, GPIO.LOW)
             time.sleep(constants.TIME_BETWEEN_BEEPS)
+    
+    @staticmethod
+    def play_youtube(link):
+        """
+        opens yt page in default browser
+        - this is a temporary solution, I will use mpv later.
+        - also, validation of links is performed by web server,
+          so remember when testing
+        """
+
+        webbrowser.open(link)
+
 
     @staticmethod
-    def is_time_to_play_sound():
+    def is_time_to_play_sound(settings):
         """ Checks if it is time to play a sound. """
 
         current_datetime = datetime.datetime.now()
         day, hour, minutes = current_datetime.weekday(), \
                              current_datetime.hour, current_datetime.minute
         try:
-            settings = config.get_settings_dictionary()
             return hour == settings['ALARM_HOUR'] and \
                 minutes == settings['ALARM_MINUTES'] and \
                 day not in settings['SLEEP_IN_DAYS']
@@ -139,8 +151,15 @@ class BuzzerThread(threading.Thread):
         """
 
         while True:
-            if BuzzerThread.is_time_to_play_sound():
-                BuzzerThread.play_sound()
+            settings = config.get_settings_dictionary()
+            if BuzzerThread.is_time_to_play_sound(settings):
+                try:
+                    if settings['BUZZER_ENABLED']:
+                        BuzzerThread.play_sound()
+                    else:
+                        BuzzerThread.play_youtube(settings['YOUTUBE_LINK'])
+                except ValueError:
+                    BuzzerThread.play_sound()
 
 
 class ThreadManager:
