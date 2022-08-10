@@ -16,11 +16,9 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Count down until a certain date and/or time.
 - Display the local sunset / sunrise times.
 
-### What I'm developing right now:
-- Ability to play noises besides the monotonous buzzer, such as ```.mp3``` files or Spotify tracks.
-- A web dashboard to change the settings of the clock from anywhere in the world.
-- A snooze button (I don't need snooze on most days but I've thought of adding this more and more lately)
-
+### Additional features
+- Flask web dashboard to customize clock settings
+- Play YouTube audio instead of buzzer for wakeup
 
 ## Setup
 
@@ -55,3 +53,10 @@ Want to add a feature or fix a bug you've noticed? Create a pull request!!
 ![image](https://i.imgur.com/kwc1tPG.jpg)
 
 Clock photo as of February, 2021
+
+
+
+![image](https://i.imgur.com/DcT7nkX.png)
+Dashboard photo 8/2022
+
+
