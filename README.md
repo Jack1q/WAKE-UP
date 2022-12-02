@@ -10,8 +10,7 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Display live stock prices from Yahoo Finance
 - Display the local temperature and weather forecast 
 - Tell you how many unread emails you have in your Gmail inbox
-- Tell you your live Instagram follower count
-- Display a custom message.
+- Display custom messages
 - Show configurable messages on certain days, such as ```Happy Birthday``` or ```Happy Pi Day!```
 - Count down until a certain date and/or time.
 - Display the local sunset / sunrise times.
