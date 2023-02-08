@@ -13,7 +13,7 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Display custom messages
 - Show configurable messages on certain days, such as ```Happy Birthday``` or ```Happy Pi Day!```
 - Count down until a certain date and/or time.
-- Display the local sunset / sunrise times.
+- Display local sunset / sunrise times.
 
 ### Additional features
 - Flask web dashboard to customize clock settings
@@ -29,11 +29,8 @@ Feel free to clone this code for your own use, or fork this repository and make 
 - Jumper Wires (M-M, M-F)
 - 10K Ohm Resistor
 
-I will post a circuit diagram once I'm finished making it.
-
 Also, GPIO pins can be configured in ```constants.py```. In case you're wondering,
-I've placed settings that I plan on allowing users to change while the clock is operating via a web dashboard in ```settings.json``` and settings that should not be changed during operation in ```constants.py```, as I hope to use the web application to send the ```json``` data to the Pi (with proper security
-precautions taken).
+I've placed settings that users may change while the clock is operating via the web dashboard in ```settings.json``` and settings that should not be changed during operation in ```constants.py```.
 
 ### Software
 To install the required modules, run ```pip3 install -r requirements.txt```.
@@ -43,7 +40,7 @@ Then run
 ```sudo apt-get install python3-smbus``` and 
 ```sudo apt-get install rpi.gpio```
 
-Configure as much as you'd like in ```settings.json```, then run ```python3 alarm.py```
+Configure as much as you'd like in ```settings.json```, then run ```run.sh```. For debugging, logs are stored in ```alarm.log```.
 
 
 ### Contributing
@@ -58,6 +55,6 @@ Clock photo as of February, 2021
 ![image](https://i.imgur.com/DcT7nkX.png)
 
 
-Dashboard photo 8/2022
+Dashboard photo as of 8/2022
 
 
