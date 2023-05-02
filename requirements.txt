@@ -1,6 +1,6 @@
 yfinance==0.1.62
 requests==2.25.1
 flask_wtf
-Flask==2.1.3
+Flask==2.3.2
 RPi.GPIO # this may not work directly from requirements.txt
 # will have to run sudo apt-get install python3-smbus as well
